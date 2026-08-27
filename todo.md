@@ -33,3 +33,12 @@
 - [x] Add richer, performance-safe motion for the help showcase, hero, and content progression.
 - [x] Make the hero start in sound-on mode when browser policy permits, with a reliable manual sound fallback.
 - [x] Verify the upgraded experience on desktop and mobile, then save the next publish-ready version.
+
+## Senior Quality Pass
+
+- [x] Remove the flawed character-hand banner and replace it with a credible, non-character Utility Help Menu visual.
+- [x] Repair the mobile Help Menu composition so the full embed is visible without awkward cropping or excess empty space.
+- [x] Connect the supplied Discord support and OAuth2 bot-invite destinations to the relevant calls to action.
+- [x] Add a styled “Designed & made by Must · © Must” footer signature.
+- [x] Review and refine the full landing page, removing generic visual patterns and strengthening purposeful motion.
+- [x] Revalidate desktop and mobile layouts before saving the next permanent version.

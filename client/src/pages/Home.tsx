@@ -30,13 +30,15 @@ import {
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const DISCORD_INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1542513806255853688&scope=bot%20applications.commands&permissions=8";
+const DISCORD_SUPPORT_URL = "https://discord.gg/bpE7tcwNCV";
+
 const assetUrls = {
   logo: "/manus-storage/b4ndx-signal-mark_9d65a5fe.png",
   hero: "/manus-storage/b4ndx-mercedes-hero_b0fb9603.jpg",
   heroReveal: "/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg",
   heroVideo: "/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4",
   consoleArt: "/manus-storage/b4ndx-command-console_165ae927.jpg",
-  helpBanner: "/manus-storage/b4ndx-help-banner_811f46b0.jpg",
 };
 
 const commands = [
@@ -203,11 +205,8 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const notifyInvite = () => {
-    toast("Invite destination ready to connect", {
-      description: "Add your Discord OAuth2 bot invite URL to activate this button.",
-    });
-  };
+  const notifyInvite = () => window.open(DISCORD_INVITE_URL, "_blank", "noopener,noreferrer");
+  const openSupport = () => window.open(DISCORD_SUPPORT_URL, "_blank", "noopener,noreferrer");
 
   const toggleHeroSound = () => {
     const video = heroVideoRef.current;
@@ -226,7 +225,15 @@ export default function Home() {
     const bounds = heroRef.current.getBoundingClientRect();
     heroRef.current.style.setProperty("--reveal-x", `${event.clientX - bounds.left}px`);
     heroRef.current.style.setProperty("--reveal-y", `${event.clientY - bounds.top}px`);
+    heroRef.current.style.setProperty("--drift-x", `${((event.clientX - bounds.left) / bounds.width - 0.5) * -12}px`);
+    heroRef.current.style.setProperty("--drift-y", `${((event.clientY - bounds.top) / bounds.height - 0.5) * -8}px`);
     setCursorVisible(true);
+  };
+
+  const resetHeroMotion = () => {
+    heroRef.current?.style.setProperty("--drift-x", "0px");
+    heroRef.current?.style.setProperty("--drift-y", "0px");
+    setCursorVisible(false);
   };
 
   const activeCommand = commands[commandIndex];
@@ -263,7 +270,7 @@ export default function Home() {
           id="top"
           ref={heroRef}
           onPointerMove={moveReveal}
-          onPointerLeave={() => setCursorVisible(false)}
+          onPointerLeave={resetHeroMotion}
         >
           <div className="hero-media" aria-hidden="true">
             <img className="hero-image" src={assetUrls.hero} alt="" />
@@ -303,7 +310,7 @@ export default function Home() {
               <div className="console-topline"><span><i /> B4NDX / LIVE PREVIEW</span><span>01:48:32</span></div>
               <div className="console-window">
                 <div className="bot-avatar"><img src={assetUrls.logo} alt="" /></div>
-                <div className="console-chat">
+                <div className="console-chat" key={activeCommand.command}>
                   <div className="bot-name">B4NDX <span>APP</span></div>
                   <div className="command-line"><Command size={15} /> {activeCommand.command}</div>
                   <div className="command-response"><CommandIcon size={16} /><span><b>{activeCommand.status}</b>{activeCommand.response}</span></div>
@@ -378,7 +385,12 @@ export default function Home() {
                 <ul className="help-category-list">
                   {helpCategories.map((category, index) => <li key={category.value} className={category.value === helpCategory ? "active" : ""} style={{ transitionDelay: `${index * 25}ms` }}><i>!</i><span><b>{category.label}</b> — {category.summary}</span></li>)}
                 </ul>
-                <div className="help-banner"><img src={assetUrls.helpBanner} alt="Original dark B4NDX utility menu character artwork" /><div><span>B4NDX</span><b>UTILITY LAYER</b></div></div>
+                <div className="help-signal-scene" aria-label="B4NDX Utility Layer system visual">
+                  <div className="signal-grid" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
+                  <div className="signal-orb" aria-hidden="true"><img src={assetUrls.logo} alt="" /></div>
+                  <div className="signal-readout"><span>B4NDX</span><b>UTILITY LAYER</b><em>12 MODULES · INDEXED</em></div>
+                  <div className="signal-bars" aria-hidden="true"><i /><i /><i /></div>
+                </div>
                 <p className="embed-footer">powered by <b>gg/b4ndx</b> <span>◆</span></p>
               </article>
               <div className="help-selector-wrap">
@@ -388,7 +400,7 @@ export default function Home() {
                     {helpCategories.map((category) => <SelectItem key={category.value} value={category.value}>{category.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
-                <div className="help-command-response"><span><Command size={14} /> {activeHelp.command}</span><p><b>{activeHelp.label}</b>{activeHelp.response}</p></div>
+                <div className="help-command-response" key={activeHelp.value}><span><Command size={14} /> {activeHelp.command}</span><p><b>{activeHelp.label}</b>{activeHelp.response}</p></div>
               </div>
             </div>
           </div>
@@ -416,14 +428,14 @@ export default function Home() {
           <div className="invite-card" data-reveal>
             <div className="invite-mark"><img src={assetUrls.logo} alt="" /></div>
             <div><div className="eyebrow"><span /> READY WHEN YOUR SERVER IS</div><h2>Keep the chaos handled.</h2></div>
-            <div className="invite-actions"><button className="button primary" onClick={notifyInvite}>Invite B4NDX <ArrowUpRight size={18} /></button><button className="button ghost light" onClick={() => toast("Support server link ready to connect", { description: "Add your Discord support server URL to activate this link." })}>Join support <Headphones size={18} /></button></div>
+            <div className="invite-actions"><button className="button primary" onClick={notifyInvite}>Invite B4NDX <ArrowUpRight size={18} /></button><button className="button ghost light" onClick={openSupport}>Join support <Headphones size={18} /></button></div>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
         <div className="footer-top"><button className="brand footer-brand" onClick={() => scrollToSection("top")}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><p>A composed Discord bot system for communities that prefer signal over noise.</p><div className="footer-links"><button onClick={() => scrollToSection("modules")}>Modules</button><button onClick={() => scrollToSection("help")}>Help Menu</button><button onClick={() => scrollToSection("support")}>Support</button></div></div>
-        <div className="footer-bottom"><span>© 2026 B4NDX BOT SYSTEMS</span><span>BUILT FOR DISCIPLINED COMMUNITIES</span><span>SYSTEM STATUS: READY <i /></span></div>
+        <div className="footer-bottom"><span>© MUST</span><span className="must-signature">DESIGNED &amp; MADE BY <b>MUST</b></span><span>SYSTEM STATUS: READY <i /></span></div>
         <div className="footer-wordmark" aria-hidden="true">B4NDX</div>
       </footer>
 
