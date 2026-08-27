@@ -62,3 +62,5 @@ The B4NDX wordmark is a tight, uppercase Onest construction with a compact Signa
 - Signal Lime is limited to CTAs, live indicators, command artifacts, telemetry rings, and key state values; the midnight automotive composition remains visually dominant.
 - Each feature module includes an operational bot artifact and a live-style routing or permission state rather than behaving like a generic SaaS feature tile.
 - The telemetry panel presents meaningful operational proof on first paint and still animates its coverage state as the visitor reaches it.
+- The hero now uses the approved six-second Pursuit Mode video as the primary experience. Video audio starts muted to comply with browser autoplay rules and has a clear user-controlled sound toggle.
+- Motion is layered deliberately: car-video ignition and desktop cursor reveal in the hero; restrained signal passes, command-console pulse, icon sheen, card states, and scroll reveals through the rest of the page. Mobile keeps video and tap feedback but removes expensive hover-dependent decoration.

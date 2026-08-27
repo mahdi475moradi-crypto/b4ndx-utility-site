@@ -22,6 +22,8 @@ import {
   Sparkles,
   Ticket,
   UsersRound,
+  Volume2,
+  VolumeX,
   X,
   Zap,
 } from "lucide-react";
@@ -31,6 +33,7 @@ const assetUrls = {
   logo: "/manus-storage/b4ndx-signal-mark_9d65a5fe.png",
   hero: "/manus-storage/b4ndx-mercedes-hero_b0fb9603.jpg",
   heroReveal: "/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg",
+  heroVideo: "/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4",
   consoleArt: "/manus-storage/b4ndx-command-console_165ae927.jpg",
 };
 
@@ -103,11 +106,14 @@ function scrollToSection(id: string) {
 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const telemetryRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(false);
   const [commandIndex, setCommandIndex] = useState(0);
   const [telemetryProgress, setTelemetryProgress] = useState(61);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [soundOn, setSoundOn] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -168,6 +174,18 @@ export default function Home() {
     });
   };
 
+  const toggleHeroSound = () => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+    const shouldEnable = !soundOn;
+    video.muted = !shouldEnable;
+    video.volume = 0.42;
+    video.play().catch(() => {
+      toast("Tap sound again to activate audio", { description: "Your browser needs a direct interaction before it can play hero sound." });
+    });
+    setSoundOn(shouldEnable);
+  };
+
   const moveReveal = (event: React.PointerEvent<HTMLElement>) => {
     if (event.pointerType !== "mouse" || !heroRef.current) return;
     const bounds = heroRef.current.getBoundingClientRect();
@@ -213,10 +231,25 @@ export default function Home() {
         >
           <div className="hero-media" aria-hidden="true">
             <img className="hero-image" src={assetUrls.hero} alt="" />
+            <video
+              className={`hero-video ${heroVideoReady ? "is-ready" : ""}`}
+              ref={heroVideoRef}
+              autoPlay
+              loop
+              muted={!soundOn}
+              playsInline
+              preload="metadata"
+              poster={assetUrls.hero}
+              onCanPlay={() => setHeroVideoReady(true)}
+              onError={() => setHeroVideoReady(false)}
+            >
+              <source src={assetUrls.heroVideo} type="video/mp4" />
+            </video>
             <div className="hero-image-reveal"><img src={assetUrls.heroReveal} alt="" /></div>
             <div className="hero-shade" />
           </div>
           <div className="reveal-cursor" aria-hidden="true"><span>+</span></div>
+          <div className="hero-speed-lines" aria-hidden="true"><i /><i /><i /></div>
 
           <div className="hero-shell">
             <div className="hero-copy" data-reveal>
@@ -247,6 +280,10 @@ export default function Home() {
             </aside>
           </div>
           <div className="hero-bottom"><span>B4NDX / BOT OPERATIONS</span><span className="hero-bottom-center">DISCIPLINE FOR EVERY CHANNEL</span><span>SCROLL TO DEPLOY ↓</span></div>
+          <button className="video-sound-toggle" onClick={toggleHeroSound} aria-pressed={soundOn}>
+            {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+            <span>{soundOn ? "Sound on" : "Enable sound"}</span>
+          </button>
           <div className="hero-wordmark" aria-hidden="true">B4NDX</div>
         </section>
 
