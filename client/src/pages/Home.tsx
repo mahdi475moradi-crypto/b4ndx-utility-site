@@ -299,7 +299,7 @@ export default function Home() {
             <div className="hero-copy" data-reveal>
               <div className="eyebrow"><span /> DISCORD AUTOMATION / 01</div>
               <h1><span>Run your server</span><span>without running</span><em>after it.</em></h1>
-              <p>B4NDX gives your Discord community a composed control layer for moderation, tickets, onboarding, and the moments between.</p>
+              <p>B4NDX Utility gives your Discord community a composed control layer for moderation, tickets, onboarding, and the moments between.</p>
               <div className="hero-actions">
                 <button className="button primary" onClick={notifyInvite}>Invite B4NDX Utility <ArrowUpRight size={18} /></button>
                 <button className="button ghost" onClick={() => scrollToSection("console")}>See the console <ArrowRight size={18} /></button>
