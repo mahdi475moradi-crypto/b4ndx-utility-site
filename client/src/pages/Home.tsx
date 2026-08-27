@@ -30,15 +30,16 @@ import {
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const MANUS_ASSET_ORIGIN = "https://lumorastud-8uwvhw9u.manus.space";
 const DISCORD_INVITE_URL = "https://discord.com/oauth2/authorize?client_id=1542513806255853688&scope=bot%20applications.commands&permissions=8";
 const DISCORD_SUPPORT_URL = "https://discord.gg/bpE7tcwNCV";
 
 const assetUrls = {
-  logo: "/manus-storage/b4ndx-signal-mark_9d65a5fe.png",
-  hero: "/manus-storage/b4ndx-mercedes-hero_b0fb9603.jpg",
-  heroReveal: "/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg",
-  heroVideo: "/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4",
-  consoleArt: "/manus-storage/b4ndx-command-console_165ae927.jpg",
+  logo: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-signal-mark_9d65a5fe.png`,
+  hero: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-mercedes-hero_b0fb9603.jpg`,
+  heroReveal: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg`,
+  heroVideo: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4`,
+  consoleArt: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-command-console_165ae927.jpg`,
 };
 
 const commands = [
@@ -246,9 +247,9 @@ export default function Home() {
       <a className="skip-link" href="#main">Skip to content</a>
 
       <header className="site-header">
-        <button className="brand" onClick={() => scrollToSection("top")} aria-label="B4NDX home">
+          <button className="brand" onClick={() => scrollToSection("top")} aria-label="B4NDX Utility home">
           <img src={assetUrls.logo} alt="" />
-          <span>B4NDX</span>
+          <span>B4NDX Utility</span>
           <i />
         </button>
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -300,18 +301,18 @@ export default function Home() {
               <h1><span>Run your server</span><span>without running</span><em>after it.</em></h1>
               <p>B4NDX gives your Discord community a composed control layer for moderation, tickets, onboarding, and the moments between.</p>
               <div className="hero-actions">
-                <button className="button primary" onClick={notifyInvite}>Invite B4NDX <ArrowUpRight size={18} /></button>
+                <button className="button primary" onClick={notifyInvite}>Invite B4NDX Utility <ArrowUpRight size={18} /></button>
                 <button className="button ghost" onClick={() => scrollToSection("console")}>See the console <ArrowRight size={18} /></button>
               </div>
               <div className="cursor-hint"><Sparkles size={14} /> Move to reveal <span className="hide-on-touch">the signal layer</span></div>
             </div>
 
             <aside className="hero-console" data-reveal>
-              <div className="console-topline"><span><i /> B4NDX / LIVE PREVIEW</span><span>01:48:32</span></div>
+              <div className="console-topline"><span><i /> B4NDX UTILITY / LIVE PREVIEW</span><span>01:48:32</span></div>
               <div className="console-window">
                 <div className="bot-avatar"><img src={assetUrls.logo} alt="" /></div>
                 <div className="console-chat" key={activeCommand.command}>
-                  <div className="bot-name">B4NDX <span>APP</span></div>
+                  <div className="bot-name">B4NDX Utility <span>APP</span></div>
                   <div className="command-line"><Command size={15} /> {activeCommand.command}</div>
                   <div className="command-response"><CommandIcon size={16} /><span><b>{activeCommand.status}</b>{activeCommand.response}</span></div>
                 </div>
@@ -322,15 +323,15 @@ export default function Home() {
               </div>
             </aside>
           </div>
-          <div className="hero-bottom"><span>B4NDX / BOT OPERATIONS</span><span className="hero-bottom-center">DISCIPLINE FOR EVERY CHANNEL</span><span>SCROLL TO DEPLOY ↓</span></div>
+          <div className="hero-bottom"><span>B4NDX UTILITY / BOT OPERATIONS</span><span className="hero-bottom-center">DISCIPLINE FOR EVERY CHANNEL</span><span>SCROLL TO DEPLOY ↓</span></div>
           <button className="video-sound-toggle" onClick={toggleHeroSound} aria-pressed={soundOn}>
             {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
             <span>{soundOn ? "Sound on" : "Enable sound"}</span>
           </button>
-          <div className="hero-wordmark" aria-hidden="true">B4NDX</div>
+          <div className="hero-wordmark" aria-hidden="true">B4NDX UTILITY</div>
         </section>
 
-        <section className="proof-strip" aria-label="B4NDX product attributes">
+        <section className="proof-strip" aria-label="B4NDX Utility product attributes">
           <div className="proof-item" data-reveal><Zap size={18} /><div><b>Command-first</b><span>Built around fast, readable actions</span></div></div>
           <div className="proof-item" data-reveal><UsersRound size={18} /><div><b>Role-aware</b><span>Clear routes for every part of your team</span></div></div>
           <div className="proof-item" data-reveal><LockKeyhole size={18} /><div><b>Policy-led</b><span>Make server rules visible in the workflow</span></div></div>
@@ -339,7 +340,7 @@ export default function Home() {
 
         <section className="module-section section-shell" id="modules">
           <div className="section-heading" data-reveal>
-            <div className="eyebrow"><span /> THE B4NDX STACK</div>
+            <div className="eyebrow"><span /> THE B4NDX UTILITY STACK</div>
             <h2>One command layer.<br /><em>Every server moment.</em></h2>
             <p>Start where your community needs control, then extend the operating system with clear modules your team can actually use.</p>
           </div>
@@ -361,7 +362,7 @@ export default function Home() {
           <div className="console-section-copy" data-reveal>
             <div className="eyebrow lime"><span /> SERVER CONSOLE / 24</div>
             <h2>Clear inputs.<br /><em>Calm outcomes.</em></h2>
-            <p>B4NDX is designed to make routine actions legible: commands say what they do, status feedback tells you what happened, and the next step stays in reach.</p>
+            <p>B4NDX Utility is designed to make routine actions legible: commands say what they do, status feedback tells you what happened, and the next step stays in reach.</p>
             <div className="micro-command"><span className="prompt">›</span><span className="monospace">/b4ndx status</span><span className="micro-answer"><Check size={14} /> all modules ready</span></div>
             <button className="text-link" onClick={() => scrollToSection("protocol")}>Explore the protocol <ArrowRight size={16} /></button>
           </div>
@@ -371,7 +372,7 @@ export default function Home() {
           <div className="help-intro" data-reveal>
             <div className="eyebrow"><span /> UTILITY HELP MENU / 12</div>
             <h2>Every command.<br /><em>One clear path.</em></h2>
-            <p>The B4NDX Help Menu turns a long command list into a clean, Discord-native control surface your community can actually browse.</p>
+            <p>The B4NDX Utility Help Menu turns a long command list into a clean, Discord-native control surface your community can actually browse.</p>
             <div className="help-orbit" aria-hidden="true"><img src={assetUrls.logo} alt="" /><span>MODULE INDEX</span><i /><i /><i /></div>
           </div>
           <div className="discord-showcase" data-reveal>
@@ -391,7 +392,7 @@ export default function Home() {
                   <div className="signal-readout"><span>B4NDX</span><b>UTILITY LAYER</b><em>12 MODULES · INDEXED</em></div>
                   <div className="signal-bars" aria-hidden="true"><i /><i /><i /></div>
                 </div>
-                <p className="embed-footer">powered by <b>gg/b4ndx</b> <span>◆</span></p>
+                <p className="embed-footer">powered by <b>B4NDX Utility</b> <span>◆</span></p>
               </article>
               <div className="help-selector-wrap">
                 <Select value={helpCategory} onValueChange={setHelpCategory}>
@@ -415,7 +416,7 @@ export default function Home() {
 
         <section className="telemetry-section" ref={telemetryRef}>
           <div className="telemetry-shell">
-            <div className="telemetry-copy" data-reveal><div className="eyebrow lime"><span /> CONTROL ROOM</div><h2>Keep your community<br /><em>in the clear.</em></h2><p>Every B4NDX interaction is designed to make the state of your server easy to scan, act on, and share with your team.</p><div className="telemetry-tags"><span><i /> ROUTINES ONLINE</span><span><i /> ESCALATIONS READY</span></div></div>
+            <div className="telemetry-copy" data-reveal><div className="eyebrow lime"><span /> CONTROL ROOM</div><h2>Keep your community<br /><em>in the clear.</em></h2><p>Every B4NDX Utility interaction is designed to make the state of your server easy to scan, act on, and share with your team.</p><div className="telemetry-tags"><span><i /> ROUTINES ONLINE</span><span><i /> ESCALATIONS READY</span></div></div>
             <div className="telemetry-card" data-reveal>
               <div className="telemetry-header"><span><CircleGauge size={17} /> AUTOMATION COVERAGE</span><span>LIVE MAP</span></div>
               <div className="telemetry-visual" style={telemetryStyle}><div><b>{telemetryProgress}</b><span>AUTOMATION<br />COVERAGE</span></div></div>
@@ -428,15 +429,15 @@ export default function Home() {
           <div className="invite-card" data-reveal>
             <div className="invite-mark"><img src={assetUrls.logo} alt="" /></div>
             <div><div className="eyebrow"><span /> READY WHEN YOUR SERVER IS</div><h2>Keep the chaos handled.</h2></div>
-            <div className="invite-actions"><button className="button primary" onClick={notifyInvite}>Invite B4NDX <ArrowUpRight size={18} /></button><button className="button ghost light" onClick={openSupport}>Join support <Headphones size={18} /></button></div>
+            <div className="invite-actions"><button className="button primary" onClick={notifyInvite}>Invite B4NDX Utility <ArrowUpRight size={18} /></button><button className="button ghost light" onClick={openSupport}>Join support <Headphones size={18} /></button></div>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
-        <div className="footer-top"><button className="brand footer-brand" onClick={() => scrollToSection("top")}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><p>A composed Discord bot system for communities that prefer signal over noise.</p><div className="footer-links"><button onClick={() => scrollToSection("modules")}>Modules</button><button onClick={() => scrollToSection("help")}>Help Menu</button><button onClick={() => scrollToSection("support")}>Support</button></div></div>
+        <div className="footer-top"><button className="brand footer-brand" onClick={() => scrollToSection("top")}><img src={assetUrls.logo} alt="" /><span>B4NDX Utility</span><i /></button><p>A composed Discord bot system for communities that prefer signal over noise.</p><div className="footer-links"><button onClick={() => scrollToSection("modules")}>Modules</button><button onClick={() => scrollToSection("help")}>Help Menu</button><button onClick={() => scrollToSection("support")}>Support</button></div></div>
         <div className="footer-bottom"><span>© MUST</span><span className="must-signature">DESIGNED &amp; MADE BY <b>MUST</b></span><span>SYSTEM STATUS: READY <i /></span></div>
-        <div className="footer-wordmark" aria-hidden="true">B4NDX</div>
+        <div className="footer-wordmark" aria-hidden="true">B4NDX UTILITY</div>
       </footer>
 
       <nav className="mobile-dock" aria-label="Mobile navigation">
@@ -447,9 +448,9 @@ export default function Home() {
       </nav>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
-        <div className="mobile-menu-top"><button className="brand" onClick={() => { scrollToSection("top"); setMenuOpen(false); }}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X size={19} /></button></div>
+        <div className="mobile-menu-top"><button className="brand" onClick={() => { scrollToSection("top"); setMenuOpen(false); }}><img src={assetUrls.logo} alt="" /><span>B4NDX Utility</span><i /></button><button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X size={19} /></button></div>
         <div className="mobile-menu-links"><button onClick={() => { scrollToSection("modules"); setMenuOpen(false); }}>01 <span>Modules</span></button><button onClick={() => { scrollToSection("help"); setMenuOpen(false); }}>02 <span>Help Menu</span></button><button onClick={() => { scrollToSection("protocol"); setMenuOpen(false); }}>03 <span>Protocol</span></button><button onClick={() => { scrollToSection("support"); setMenuOpen(false); }}>04 <span>Support</span></button></div>
-        <button className="button primary menu-invite" onClick={() => { setMenuOpen(false); notifyInvite(); }}>Invite B4NDX <ArrowUpRight size={18} /></button>
+        <button className="button primary menu-invite" onClick={() => { setMenuOpen(false); notifyInvite(); }}>Invite B4NDX Utility <ArrowUpRight size={18} /></button>
       </div>
     </div>
   );

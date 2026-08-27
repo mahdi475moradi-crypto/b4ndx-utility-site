@@ -42,3 +42,10 @@
 - [x] Add a styled “Designed & made by Must · © Must” footer signature.
 - [x] Review and refine the full landing page, removing generic visual patterns and strengthening purposeful motion.
 - [x] Revalidate desktop and mobile layouts before saving the next permanent version.
+
+## B4NDX Utility and Cloudflare Pages Handoff
+
+- [x] Define B4NDX Utility as the site-wide brand and Cloudflare Pages as the external hosting handoff.
+- [x] Replace B4NDX branding, calls to action, document title, and footer copy with B4NDX Utility.
+- [x] Prepare a Cloudflare Pages deployment guide using the free b4ndx-utility.pages.dev project address.
+- [x] Validate the production build after the rebrand and save the final Cloudflare-ready version.
