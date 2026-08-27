@@ -25,3 +25,11 @@
 - [x] Replace the hero still image with the autoplaying cinematic video and resilient fallback image.
 - [x] Add polished ambient, scroll, console, and interaction animations that remain performant on mobile.
 - [x] Re-check desktop and mobile rendering, then save a new publish-ready version.
+
+## Utility Help Menu and Motion Upgrade
+
+- [x] Define the Discord-style B4NDX Utility Help Menu showcase from the supplied reference.
+- [x] Add the category-driven utility help embed, including the lime signal edge, command list, character area, and selector state.
+- [x] Add richer, performance-safe motion for the help showcase, hero, and content progression.
+- [x] Make the hero start in sound-on mode when browser policy permits, with a reliable manual sound fallback.
+- [x] Verify the upgraded experience on desktop and mobile, then save the next publish-ready version.

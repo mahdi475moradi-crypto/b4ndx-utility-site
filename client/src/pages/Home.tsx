@@ -28,6 +28,7 @@ import {
   Zap,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const assetUrls = {
   logo: "/manus-storage/b4ndx-signal-mark_9d65a5fe.png",
@@ -35,6 +36,7 @@ const assetUrls = {
   heroReveal: "/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg",
   heroVideo: "/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4",
   consoleArt: "/manus-storage/b4ndx-command-console_165ae927.jpg",
+  helpBanner: "/manus-storage/b4ndx-help-banner_811f46b0.jpg",
 };
 
 const commands = [
@@ -100,6 +102,21 @@ const protocol = [
   ["04", "Designed to stay calm", "Live status markers and scoped replies make high-volume server work easier to scan."],
 ];
 
+const helpCategories = [
+  { value: "stats", label: "Server Statistics", summary: "View server stats", command: "/stats", response: "Readable server activity, roles, and community signals in one compact status card." },
+  { value: "welcome", label: "Welcome System", summary: "Set up welcome messages", command: "/welcome setup", response: "Create role-aware first messages and give new members a clear next step." },
+  { value: "goodbye", label: "Goodbye System", summary: "Set up goodbye messages", command: "/goodbye setup", response: "Close member journeys cleanly while retaining useful server context." },
+  { value: "logging", label: "Logging System", summary: "Set up server logs", command: "/logs configure", response: "Route important actions to a clear, review-ready moderation log." },
+  { value: "moderation", label: "Moderation", summary: "Basic moderation commands", command: "/moderate scan", response: "Run policy checks, document decisions, and keep the next action visible." },
+  { value: "automod", label: "Auto-Moderation", summary: "Automation settings", command: "/automod configure", response: "Set guardrails that work quietly in the background of your community." },
+  { value: "tickets", label: "Ticket System", summary: "Support tickets", command: "/ticket create", response: "Give support conversations the right privacy, routing, and response path." },
+  { value: "suggestions", label: "Suggestion System", summary: "Submit suggestions", command: "/suggestion open", response: "Collect community input in a format your team can review and act on." },
+  { value: "giveaway", label: "Giveaway System", summary: "Host giveaways", command: "/giveaway launch", response: "Launch a controlled event with a visible entry and conclusion flow." },
+  { value: "polls", label: "Poll System", summary: "Create polls", command: "/poll create", response: "Turn decisions into a focused community vote without message clutter." },
+  { value: "utility", label: "Utility Management", summary: "Server and user management", command: "/utility member", response: "Resolve everyday member and channel management through one command layer." },
+  { value: "fun", label: "Fun Commands", summary: "Memes, jokes, actions and more", command: "/fun", response: "Keep engagement lightweight with social commands designed for your community’s tone." },
+];
+
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -114,6 +131,7 @@ export default function Home() {
   const [telemetryProgress, setTelemetryProgress] = useState(61);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
+  const [helpCategory, setHelpCategory] = useState("stats");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -129,6 +147,23 @@ export default function Home() {
     );
     document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => observer.observe(element));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+    const startWithSound = () => {
+      video.muted = false;
+      video.volume = 0.42;
+      video.play().then(() => setSoundOn(true)).catch(() => {
+        video.muted = true;
+        video.play().catch(() => undefined);
+        setSoundOn(false);
+      });
+    };
+    if (video.readyState >= 3) startWithSound();
+    else video.addEventListener("canplay", startWithSound, { once: true });
+    return () => video.removeEventListener("canplay", startWithSound);
   }, []);
 
   useEffect(() => {
@@ -196,6 +231,7 @@ export default function Home() {
 
   const activeCommand = commands[commandIndex];
   const CommandIcon = activeCommand.icon;
+  const activeHelp = helpCategories.find((category) => category.value === helpCategory) ?? helpCategories[0];
   const telemetryStyle = { "--telemetry-angle": `${telemetryProgress * 3.6}deg` } as CSSProperties;
 
   return (
@@ -324,6 +360,40 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="help-section section-shell" id="help">
+          <div className="help-intro" data-reveal>
+            <div className="eyebrow"><span /> UTILITY HELP MENU / 12</div>
+            <h2>Every command.<br /><em>One clear path.</em></h2>
+            <p>The B4NDX Help Menu turns a long command list into a clean, Discord-native control surface your community can actually browse.</p>
+            <div className="help-orbit" aria-hidden="true"><img src={assetUrls.logo} alt="" /><span>MODULE INDEX</span><i /><i /><i /></div>
+          </div>
+          <div className="discord-showcase" data-reveal>
+            <div className="discord-titlebar"><span><i /> B4NDX UTILITY</span><span><b /> <b /> <b /></span></div>
+            <div className="discord-body">
+              <div className="discord-avatar"><img src={assetUrls.logo} alt="" /></div>
+              <article className="help-embed">
+                <div className="embed-heading"><Sparkles size={19} /><h3>B4NDX Utility Help Menu</h3></div>
+                <p className="embed-lead">Browse the utility categories below to view available modules. <strong>Select a category to see the command.</strong></p>
+                <div className="available-label"><span /> Available Categories</div>
+                <ul className="help-category-list">
+                  {helpCategories.map((category, index) => <li key={category.value} className={category.value === helpCategory ? "active" : ""} style={{ transitionDelay: `${index * 25}ms` }}><i>!</i><span><b>{category.label}</b> — {category.summary}</span></li>)}
+                </ul>
+                <div className="help-banner"><img src={assetUrls.helpBanner} alt="Original dark B4NDX utility menu character artwork" /><div><span>B4NDX</span><b>UTILITY LAYER</b></div></div>
+                <p className="embed-footer">powered by <b>gg/b4ndx</b> <span>◆</span></p>
+              </article>
+              <div className="help-selector-wrap">
+                <Select value={helpCategory} onValueChange={setHelpCategory}>
+                  <SelectTrigger className="help-select" aria-label="Select a utility category"><SelectValue placeholder="Select a utility category" /></SelectTrigger>
+                  <SelectContent className="help-select-menu">
+                    {helpCategories.map((category) => <SelectItem key={category.value} value={category.value}>{category.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <div className="help-command-response"><span><Command size={14} /> {activeHelp.command}</span><p><b>{activeHelp.label}</b>{activeHelp.response}</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="protocol-section section-shell" id="protocol">
           <div className="protocol-label" data-reveal><div className="eyebrow"><span /> OPERATING PRINCIPLES</div><p>Less noise. More signal. Built for communities that want a dependable center of control.</p></div>
           <ol className="protocol-list">
@@ -352,7 +422,7 @@ export default function Home() {
       </main>
 
       <footer className="site-footer">
-        <div className="footer-top"><button className="brand footer-brand" onClick={() => scrollToSection("top")}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><p>A composed Discord bot system for communities that prefer signal over noise.</p><div className="footer-links"><button onClick={() => scrollToSection("modules")}>Modules</button><button onClick={() => scrollToSection("console")}>Console</button><button onClick={() => scrollToSection("support")}>Support</button></div></div>
+        <div className="footer-top"><button className="brand footer-brand" onClick={() => scrollToSection("top")}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><p>A composed Discord bot system for communities that prefer signal over noise.</p><div className="footer-links"><button onClick={() => scrollToSection("modules")}>Modules</button><button onClick={() => scrollToSection("help")}>Help Menu</button><button onClick={() => scrollToSection("support")}>Support</button></div></div>
         <div className="footer-bottom"><span>© 2026 B4NDX BOT SYSTEMS</span><span>BUILT FOR DISCIPLINED COMMUNITIES</span><span>SYSTEM STATUS: READY <i /></span></div>
         <div className="footer-wordmark" aria-hidden="true">B4NDX</div>
       </footer>
@@ -360,13 +430,13 @@ export default function Home() {
       <nav className="mobile-dock" aria-label="Mobile navigation">
         <button onClick={() => scrollToSection("top")}><Bot size={17} /><span>Overview</span></button>
         <button onClick={() => scrollToSection("modules")}><Command size={17} /><span>Modules</span></button>
-        <button onClick={() => scrollToSection("console")}><Activity size={17} /><span>Console</span></button>
+        <button onClick={() => scrollToSection("help")}><MessageSquareText size={17} /><span>Help</span></button>
         <button className="dock-invite" onClick={notifyInvite}><ArrowUpRight size={17} /><span>Invite</span></button>
       </nav>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-top"><button className="brand" onClick={() => { scrollToSection("top"); setMenuOpen(false); }}><img src={assetUrls.logo} alt="" /><span>B4NDX</span><i /></button><button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X size={19} /></button></div>
-        <div className="mobile-menu-links"><button onClick={() => { scrollToSection("modules"); setMenuOpen(false); }}>01 <span>Modules</span></button><button onClick={() => { scrollToSection("console"); setMenuOpen(false); }}>02 <span>Console</span></button><button onClick={() => { scrollToSection("protocol"); setMenuOpen(false); }}>03 <span>Protocol</span></button><button onClick={() => { scrollToSection("support"); setMenuOpen(false); }}>04 <span>Support</span></button></div>
+        <div className="mobile-menu-links"><button onClick={() => { scrollToSection("modules"); setMenuOpen(false); }}>01 <span>Modules</span></button><button onClick={() => { scrollToSection("help"); setMenuOpen(false); }}>02 <span>Help Menu</span></button><button onClick={() => { scrollToSection("protocol"); setMenuOpen(false); }}>03 <span>Protocol</span></button><button onClick={() => { scrollToSection("support"); setMenuOpen(false); }}>04 <span>Support</span></button></div>
         <button className="button primary menu-invite" onClick={() => { setMenuOpen(false); notifyInvite(); }}>Invite B4NDX <ArrowUpRight size={18} /></button>
       </div>
     </div>
