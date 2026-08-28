@@ -52,6 +52,17 @@
 
 ## Independent Delivery Package
 
-- [ ] Create a clean downloadable ZIP of the B4NDX Utility project, excluding build artifacts and dependencies.
-- [ ] Create a private GitHub repository and push the latest B4NDX Utility source code.
-- [ ] Deliver the ZIP and private repository link for independent deployment.
+- [x] Create a clean downloadable ZIP of the B4NDX Utility project, excluding build artifacts and dependencies.
+- [x] Create a private GitHub repository and push the latest B4NDX Utility source code.
+- [x] Deliver the ZIP and private repository link for independent deployment.
+
+## No-Cost Custom Domain Research
+
+- [x] Verify trustworthy free custom-style domain options that work with Cloudflare DNS.
+- [x] Recommend `b4ndxutility.eu.org` as the closest trustworthy no-cost custom-style address, subject to EU.org approval and external DNS setup.
+- [x] Provide the Cloudflare Pages connection steps: request the address through EU.org, delegate its nameservers to Cloudflare if approved, then attach it through Workers & Pages → Custom domains.
+
+## Cloudflare Upload Blocker
+
+- [ ] Resolve Cloudflare uploader error: use a build-based Pages deployment (`pnpm run build` then deploy `dist/public`) or connect the Git repository with Pages build settings; do not upload the source ZIP folder directly.
+- [ ] Fix Cloudflare GitHub build failure: Wrangler could not detect a valid Vite `plugins` array in `vite.config.ts`.
