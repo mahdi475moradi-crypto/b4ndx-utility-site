@@ -66,3 +66,4 @@
 
 - [ ] Resolve Cloudflare uploader error: use a build-based Pages deployment (`pnpm run build` then deploy `dist/public`) or connect the Git repository with Pages build settings; do not upload the source ZIP folder directly.
 - [ ] Fix Cloudflare GitHub build failure: Wrangler could not detect a valid Vite `plugins` array in `vite.config.ts`.
+- [ ] Fix Cloudflare mode mismatch: deployment is requesting `assets.directory`; ensure the project uses the Pages output directory `dist/public` or provide a valid Workers assets configuration.
