@@ -1,21 +1,31 @@
-# B4NDX Utility on Cloudflare Pages
+# B4NDX Utility on Cloudflare Workers
 
-Use **Cloudflare Pages** with the project name `b4ndx-utility`. If that name is available, your free public address will be:
+This project is configured for **Cloudflare Workers Static Assets**, not Cloudflare Pages. The deployment configuration is in `wrangler.jsonc` and serves the Vite build output from `dist/public`.
 
-```text
-https://b4ndx-utility.pages.dev
+## Build locally
+
+```bash
+pnpm install --frozen-lockfile
+pnpm run build
 ```
 
-In Cloudflare Pages, import the Git repository that contains this project and use these settings:
+The production assets are written to `dist/public`.
 
-| Setting | Value |
-| --- | --- |
-| Framework preset | Vite |
-| Build command | `pnpm run build` |
-| Build output directory | `dist/public` |
-| Root directory | `/` |
-| Node version | `22` |
+## Deploy with Wrangler
 
-The project uses absolute public asset links, so the Mercedes video and B4NDX visuals continue to load when the page is served from `pages.dev`.
+```bash
+pnpm exec wrangler deploy
+```
 
-> A free `pages.dev` address is conditional on the project name being available. A custom domain such as `.com` or `.gg` normally requires a paid registration.
+The Worker name is `b4ndx-utility`. Keep the deployed URL and any custom domain configuration in Cloudflare rather than hardcoding a temporary preview domain in the application.
+
+## Routing and assets
+
+The Vite build includes the SPA entry point and `client/public/manus-routes.json`. Cloudflare must serve `index.html` for client routes, including `/privacy` and `/terms`, while serving `/assets/b4ndx/*` as static files.
+
+Before a production deploy, verify:
+
+- `/` loads the B4NDX homepage.
+- `/privacy` and `/terms` work on direct navigation and refresh.
+- `/assets/b4ndx/mercedes-hero.webp` and `/assets/b4ndx/pursuit-mode-hero.mp4` return successfully.
+- The site does not require Manus environment variables or Manus-hosted asset URLs.

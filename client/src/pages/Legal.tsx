@@ -15,19 +15,19 @@ type LegalKind = "privacy" | "terms";
 const privacySections = [
   {
     title: "What B4NDX processes",
-    body: "B4NDX Utility is a Discord bot and operations site. When you use the bot, it may process the Discord information needed to respond to commands and operate the features you enable, such as your Discord user ID, server ID, channel or role IDs, command inputs, moderation actions, ticket activity, and configuration choices.",
+    body: "B4NDX Utility is a Discord bot and operations site. The public website source does not include the complete bot data inventory, so the exact Discord fields processed by each command must be confirmed from the bot implementation. Expected examples include server, channel, role, member, command, moderation, ticket, and configuration data needed for enabled features.",
   },
   {
     title: "How information is used",
-    body: "Information is used to provide, secure, troubleshoot, and improve B4NDX Utility. For example, command and configuration data can be used to route tickets, apply moderation settings, show server activity, and keep an audit trail where your server has enabled logging.",
+    body: "The intended use is to provide the enabled moderation, support, onboarding, logging, and utility features. The website describes these workflows, but the bot source is not included in this repository; confirm the precise processing purposes and any logging behavior before treating this page as a complete data notice.",
   },
   {
     title: "What we do not do",
-    body: "B4NDX Utility does not sell your information or use your Discord content for advertising. We do not ask for your Discord password. Never share account passwords, bot tokens, or other secrets through a command, ticket, or support message.",
+    body: "The website contains no advertising flow and does not ask for a Discord password. The service owner should confirm whether information is ever sold or shared outside the Discord and hosting services required to operate the bot. Never share account passwords, bot tokens, or other secrets through a command, ticket, or support message.",
   },
   {
     title: "Retention and deletion",
-    body: "We keep information only for as long as it is needed to provide the enabled feature, maintain security, resolve disputes, or meet a legal obligation. Server owners can remove the bot and delete configurations through the available bot controls or by contacting support. Some records may remain in backups for a limited period before they are overwritten.",
+    body: "The website source does not establish a verified retention schedule, deletion workflow, or backup policy. Those details must be confirmed from the bot implementation and hosting setup. Removing the bot stops future use in a server; whether stored configuration or logs are deleted automatically must be confirmed by the service owner.",
   },
   {
     title: "Discord and third parties",
@@ -35,7 +35,7 @@ const privacySections = [
   },
   {
     title: "Your choices",
-    body: "You can stop using the bot, remove it from a server, limit its permissions, or ask us about information associated with your server. For privacy questions or deletion requests, contact the support team through the B4NDX Utility support server.",
+    body: "You can stop using the bot, remove it from a server, or limit its permissions. The website provides a support-server route for questions and requests, but the exact verification and deletion process should be confirmed by the service owner.",
   },
 ];
 
@@ -142,7 +142,7 @@ export default function Legal({ kind }: { kind: LegalKind }) {
           <CheckCircle2 size={17} aria-hidden="true" />
           <p>
             {isPrivacy
-              ? "Short version: B4NDX Utility uses the Discord information needed to run the features your server enables. It does not sell your information."
+              ? "Short version: this page describes the intended data handling for B4NDX Utility, but storage, retention, sharing, and deletion details still require confirmation from the bot implementation and service owner."
               : "Short version: use B4NDX Utility only where you have permission, keep your server responsibilities clear, and follow Discord's rules."}
           </p>
         </div>

@@ -3,7 +3,7 @@
  * Signal Lime actions, luxury Mercedes art direction, asymmetric command-center sections, and
  * purposeful motion that remains fully usable without hover or animation.
  */
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   ArrowRight,
@@ -36,17 +36,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const MANUS_ASSET_ORIGIN = "https://lumorastud-8uwvhw9u.manus.space";
+const ASSET_BASE = "/assets/b4ndx";
 const DISCORD_INVITE_URL =
   "https://discord.com/oauth2/authorize?client_id=1542513806255853688&scope=bot%20applications.commands&permissions=8";
 const DISCORD_SUPPORT_URL = "https://discord.gg/bpE7tcwNCV";
 
 const assetUrls = {
-  logo: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-signal-mark_9d65a5fe.png`,
-  hero: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-mercedes-hero_b0fb9603.jpg`,
-  heroReveal: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-mercedes-reveal_380bff3f.jpg`,
-  heroVideo: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-pursuit-mode-hero_1f3b2f65.mp4`,
-  consoleArt: `${MANUS_ASSET_ORIGIN}/manus-storage/b4ndx-command-console_165ae927.jpg`,
+  logo: `${ASSET_BASE}/signal-mark.webp`,
+  hero: `${ASSET_BASE}/mercedes-hero.webp`,
+  heroReveal: `${ASSET_BASE}/mercedes-reveal.webp`,
+  heroVideo: `${ASSET_BASE}/pursuit-mode-hero.mp4`,
+  consoleArt: `${ASSET_BASE}/command-console.webp`,
 };
 
 const commands = [
@@ -77,7 +77,7 @@ const modules = [
     name: "Moderation",
     text: "Build consistent rules, visible checks, and a clear response path for your team.",
     command: "/moderate scan",
-    signal: "POLICY SCAN READY",
+    signal: "WORKFLOW / MODERATION",
   },
   {
     icon: Ticket,
@@ -85,7 +85,7 @@ const modules = [
     name: "Tickets",
     text: "Turn support moments into organised private threads with the right people in the loop.",
     command: "/ticket create",
-    signal: "ROUTING QUEUE ONLINE",
+    signal: "WORKFLOW / SUPPORT",
   },
   {
     icon: MessageSquareText,
@@ -93,7 +93,7 @@ const modules = [
     name: "Welcome flows",
     text: "Make a better first impression with role-aware onboarding and useful next steps.",
     command: "/welcome setup",
-    signal: "ROLE PATHS MAPPED",
+    signal: "WORKFLOW / ONBOARDING",
   },
   {
     icon: ChartNoAxesCombined,
@@ -101,7 +101,7 @@ const modules = [
     name: "Server insight",
     text: "Keep a readable pulse on the actions, members, and systems your community depends on.",
     command: "/server pulse",
-    signal: "EVENT FEED SYNCED",
+    signal: "WORKFLOW / INSIGHT",
   },
 ];
 
@@ -124,7 +124,7 @@ const protocol = [
   [
     "04",
     "Designed to stay calm",
-    "Live status markers and scoped replies make high-volume server work easier to scan.",
+    "Clear status markers and scoped replies make high-volume server work easier to scan.",
   ],
 ];
 
@@ -236,14 +236,16 @@ function scrollToSection(id: string) {
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
-  const telemetryRef = useRef<HTMLElement>(null);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
+  const menuWasOpen = useRef(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(false);
   const [commandIndex, setCommandIndex] = useState(0);
-  const [telemetryProgress, setTelemetryProgress] = useState(61);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [helpCategory, setHelpCategory] = useState("stats");
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -264,26 +266,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const video = heroVideoRef.current;
-    if (!video) return;
-    const startWithSound = () => {
-      video.muted = false;
-      video.volume = 0.42;
-      video
-        .play()
-        .then(() => setSoundOn(true))
-        .catch(() => {
-          video.muted = true;
-          video.play().catch(() => undefined);
-          setSoundOn(false);
-        });
-    };
-    if (video.readyState >= 3) startWithSound();
-    else video.addEventListener("canplay", startWithSound, { once: true });
-    return () => video.removeEventListener("canplay", startWithSound);
-  }, []);
-
-  useEffect(() => {
     const interval = window.setInterval(() => {
       setCommandIndex(index => (index + 1) % commands.length);
     }, 4200);
@@ -291,27 +273,15 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const element = telemetryRef.current;
-    if (!element) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        const start = performance.now();
-        const duration = 1200;
-        const animate = (now: number) => {
-          const progress = Math.min((now - start) / duration, 1);
-          setTelemetryProgress(
-            Math.round(61 + (1 - Math.pow(1 - progress, 3)) * 31)
-          );
-          if (progress < 1) requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate);
-        observer.disconnect();
-      },
-      { threshold: 0.45 }
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotionPreference = () => {
+      setReducedMotion(motionQuery.matches);
+      if (motionQuery.matches) heroVideoRef.current?.pause();
+    };
+    syncMotionPreference();
+    motionQuery.addEventListener("change", syncMotionPreference);
+    return () =>
+      motionQuery.removeEventListener("change", syncMotionPreference);
   }, []);
 
   useEffect(() => {
@@ -321,6 +291,15 @@ export default function Home() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      requestAnimationFrame(() => menuCloseRef.current?.focus());
+    } else if (menuWasOpen.current) {
+      menuTriggerRef.current?.focus();
+    }
+    menuWasOpen.current = menuOpen;
+  }, [menuOpen]);
 
   const notifyInvite = () =>
     window.open(DISCORD_INVITE_URL, "_blank", "noopener,noreferrer");
@@ -375,10 +354,6 @@ export default function Home() {
   const activeHelp =
     helpCategories.find(category => category.value === helpCategory) ??
     helpCategories[0];
-  const telemetryStyle = {
-    "--telemetry-angle": `${telemetryProgress * 3.6}deg`,
-  } as CSSProperties;
-
   return (
     <div className="b4ndx-site">
       <a className="skip-link" href="#main">
@@ -403,13 +378,14 @@ export default function Home() {
         </nav>
         <div className="header-actions">
           <span className="header-status">
-            <i /> SYSTEM READY
+            <i /> SITE PREVIEW
           </span>
           <button className="top-invite" onClick={notifyInvite}>
             Invite bot <ArrowUpRight size={14} />
           </button>
           <button
             className="menu-trigger"
+            ref={menuTriggerRef}
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
@@ -431,7 +407,7 @@ export default function Home() {
             <video
               className={`hero-video ${heroVideoReady ? "is-ready" : ""}`}
               ref={heroVideoRef}
-              autoPlay
+              autoPlay={!reducedMotion}
               loop
               muted={!soundOn}
               playsInline
@@ -491,9 +467,9 @@ export default function Home() {
             <aside className="hero-console" data-reveal>
               <div className="console-topline">
                 <span>
-                  <i /> B4NDX UTILITY / LIVE PREVIEW
+                  <i /> B4NDX UTILITY / EXAMPLE PREVIEW
                 </span>
-                <span>01:48:32</span>
+                <span>INTERACTIVE SAMPLE</span>
               </div>
               <div className="console-window">
                 <div className="bot-avatar">
@@ -661,7 +637,7 @@ export default function Home() {
               <span className="prompt">›</span>
               <span className="monospace">/b4ndx status</span>
               <span className="micro-answer">
-                <Check size={14} /> all modules ready
+                <Check size={14} /> example response
               </span>
             </div>
             <button
@@ -730,10 +706,16 @@ export default function Home() {
                       }
                       style={{ transitionDelay: `${index * 25}ms` }}
                     >
-                      <i>!</i>
-                      <span>
-                        <b>{category.label}</b> — {category.summary}
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setHelpCategory(category.value)}
+                        aria-pressed={category.value === helpCategory}
+                      >
+                        <i>!</i>
+                        <span>
+                          <b>{category.label}</b> — {category.summary}
+                        </span>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -823,7 +805,7 @@ export default function Home() {
           </ol>
         </section>
 
-        <section className="telemetry-section" ref={telemetryRef}>
+        <section className="telemetry-section">
           <div className="telemetry-shell">
             <div className="telemetry-copy" data-reveal>
               <div className="eyebrow lime">
@@ -840,36 +822,36 @@ export default function Home() {
               </p>
               <div className="telemetry-tags">
                 <span>
-                  <i /> ROUTINES ONLINE
+                  <i /> EXAMPLE WORKFLOW
                 </span>
                 <span>
-                  <i /> ESCALATIONS READY
+                  <i /> PREVIEW ONLY
                 </span>
               </div>
             </div>
             <div className="telemetry-card" data-reveal>
               <div className="telemetry-header">
                 <span>
-                  <CircleGauge size={17} /> AUTOMATION COVERAGE
+                  <CircleGauge size={17} /> INTERACTIVE PREVIEW
                 </span>
-                <span>LIVE MAP</span>
+                <span>NOT LIVE DATA</span>
               </div>
-              <div className="telemetry-visual" style={telemetryStyle}>
+              <div className="telemetry-visual preview-visual">
                 <div>
-                  <b>{telemetryProgress}</b>
+                  <b>UI</b>
                   <span>
-                    AUTOMATION
+                    COMMAND
                     <br />
-                    COVERAGE
+                    PREVIEW
                   </span>
                 </div>
               </div>
               <div className="telemetry-legend">
                 <span>
-                  <i /> 12 routines online
+                  <i /> Example command states
                 </span>
                 <span>
-                  <i /> Review channel ready
+                  <i /> Connect bot source to verify
                 </span>
               </div>
             </div>
@@ -927,7 +909,7 @@ export default function Home() {
             DESIGNED &amp; MADE BY <b>MUST</b>
           </span>
           <span>
-            SYSTEM STATUS: READY <i />
+            WEBSITE BUILD: VERIFIED <i />
           </span>
         </div>
         <div className="footer-wordmark" aria-hidden="true">
@@ -954,80 +936,85 @@ export default function Home() {
         </button>
       </nav>
 
-      <div
-        className={`mobile-menu ${menuOpen ? "open" : ""}`}
-        aria-hidden={!menuOpen}
-      >
-        <div className="mobile-menu-top">
-          <button
-            className="brand"
-            onClick={() => {
-              scrollToSection("top");
-              setMenuOpen(false);
-            }}
-          >
-            <img src={assetUrls.logo} alt="" />
-            <span>B4NDX Utility</span>
-            <i />
-          </button>
-          <button
-            className="menu-close"
-            onClick={() => setMenuOpen(false)}
-            aria-label="Close menu"
-          >
-            <X size={19} />
-          </button>
-        </div>
-        <div className="mobile-menu-links">
-          <button
-            onClick={() => {
-              scrollToSection("modules");
-              setMenuOpen(false);
-            }}
-          >
-            01 <span>Modules</span>
-          </button>
-          <button
-            onClick={() => {
-              scrollToSection("help");
-              setMenuOpen(false);
-            }}
-          >
-            02 <span>Help Menu</span>
-          </button>
-          <button
-            onClick={() => {
-              scrollToSection("protocol");
-              setMenuOpen(false);
-            }}
-          >
-            03 <span>Protocol</span>
-          </button>
-          <button
-            onClick={() => {
-              scrollToSection("support");
-              setMenuOpen(false);
-            }}
-          >
-            04 <span>Support</span>
-          </button>
-          <a href="/privacy">
-            05 <span>Privacy Policy</span>
-          </a>
-          <a href="/terms">
-            06 <span>Terms of Service</span>
-          </a>
-        </div>
-        <button
-          className="button primary menu-invite"
-          onClick={() => {
-            setMenuOpen(false);
-            notifyInvite();
-          }}
+      {menuOpen && (
+        <div
+          className="mobile-menu open"
+          role="dialog"
+          aria-modal="true"
+          aria-label="B4NDX Utility menu"
         >
-          Invite B4NDX Utility <ArrowUpRight size={18} />
-        </button>
-      </div>
+          <div className="mobile-menu-top">
+            <button
+              className="brand"
+              onClick={() => {
+                scrollToSection("top");
+                setMenuOpen(false);
+              }}
+            >
+              <img src={assetUrls.logo} alt="" />
+              <span>B4NDX Utility</span>
+              <i />
+            </button>
+            <button
+              className="menu-close"
+              ref={menuCloseRef}
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              <X size={19} />
+            </button>
+          </div>
+          <div className="mobile-menu-links">
+            <button
+              onClick={() => {
+                scrollToSection("modules");
+                setMenuOpen(false);
+              }}
+            >
+              01 <span>Modules</span>
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("help");
+                setMenuOpen(false);
+              }}
+            >
+              02 <span>Help Menu</span>
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("protocol");
+                setMenuOpen(false);
+              }}
+            >
+              03 <span>Protocol</span>
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("support");
+                setMenuOpen(false);
+              }}
+            >
+              04 <span>Support</span>
+            </button>
+            <a href="/privacy">
+              05 <span>Privacy Policy</span>
+            </a>
+            <a href="/terms">
+              06 <span>Terms of Service</span>
+            </a>
+          </div>
+          <button
+            className="button primary menu-invite"
+            onClick={() => {
+              setMenuOpen(false);
+              notifyInvite();
+            }}
+          >
+            Invite B4NDX Utility <ArrowUpRight size={18} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
