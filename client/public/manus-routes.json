@@ -1,0 +1,7 @@
+{
+  "routes": [
+    { "path": "/", "title": "B4NDX Utility — Discord Bot Operations" },
+    { "path": "/privacy", "title": "Privacy Policy — B4NDX Utility" },
+    { "path": "/terms", "title": "Terms of Service — B4NDX Utility" }
+  ]
+}
