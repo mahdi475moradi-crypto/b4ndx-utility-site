@@ -1,0 +1,200 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/archivo";
+@import "@fontsource-variable/inter";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@theme {
+  /* ── Graphite & Rose ──────────────────────────────────────────────── */
+  --color-base-0: #0b0c0e;
+  --color-base-1: #101215;
+  --color-base-2: #15181d;
+  --color-base-3: #1a1e24;
+  --color-base-4: #22272e;
+
+  --color-ink-1: #eceff1;
+  --color-ink-2: #a8b0b7;
+  --color-ink-3: #6f777f;
+  --color-ink-4: #4a5157;
+
+  /* Accent shades lifted straight from the hero tree's blossom palette:
+     hot crown rose, pale highlight, deep interior, and a rose-black ink
+     for text sitting on the accent. */
+  --color-rose-1: #ff5c8a;
+  --color-rose-2: #ff7fb0;
+  --color-rose-3: #b2336b;
+  --color-rose-ink: #1f070f;
+
+  --color-line-1: rgba(236, 239, 241, 0.08);
+  --color-line-2: rgba(236, 239, 241, 0.14);
+
+  --color-ok: #86b392;
+  --color-blurple: #5865f2;
+
+  /* ── Type ─────────────────────────────────────────────────────────── */
+  --font-display: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter Variable", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-base-0 font-sans text-ink-1 antialiased;
+    font-feature-settings: "ss01" on, "cv05" on;
+  }
+
+  ::selection {
+    background: rgba(255, 92, 154, 0.28);
+    color: var(--color-ink-1);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-rose-1);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-base-4);
+    border: 2px solid var(--color-base-0);
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-base-0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Once the hero headline has fully faded out of the pinned sequence,
+     remove it from the tab order and accessibility tree as well. */
+  [data-past="true"] .hero-headline {
+    visibility: hidden;
+  }
+}
+
+/* ── Shared components ────────────────────────────────────────────────── */
+
+@layer components {
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-[3px] px-5 py-3 text-sm font-medium tracking-[0.01em] transition-colors duration-150;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    @apply bg-rose-1 text-rose-ink;
+  }
+  .btn-primary:hover {
+    @apply bg-rose-2;
+  }
+
+  .btn-secondary {
+    @apply border border-line-2 text-ink-1;
+  }
+  .btn-secondary:hover {
+    @apply border-ink-3 bg-base-2;
+  }
+
+  .btn-ghost {
+    @apply text-ink-2;
+  }
+  .btn-ghost:hover {
+    @apply bg-base-2 text-ink-1;
+  }
+
+  /* Mono eyebrow: "01 — Modules" */
+  .eyebrow {
+    @apply flex items-center gap-3 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-3;
+  }
+  .eyebrow-index {
+    @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-rose-1;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line-1 bg-base-2 px-2.5 py-1 font-mono text-[0.78rem] text-ink-2;
+  }
+
+  .surface {
+    @apply rounded-[4px] border border-line-1 bg-base-2;
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────── */
+
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(to right, rgba(236, 239, 241, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(236, 239, 241, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility mask-vignette {
+  mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%);
+}
+
+@utility hairline-t {
+  border-top: 1px solid var(--color-line-1);
+}
+
+@utility hairline-b {
+  border-bottom: 1px solid var(--color-line-1);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@keyframes caret {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-panel {
+  animation: panel-in 160ms var(--ease-out-quart);
+}
