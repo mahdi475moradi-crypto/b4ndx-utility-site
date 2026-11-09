@@ -146,15 +146,15 @@ export function Hero() {
         >
           <p className="eyebrow">
             <span aria-hidden className="h-px w-8 bg-rose-3" />
-            A utility bot for Discord servers
+            B4NDX Utility for Discord
           </p>
           <h1 className="mt-5 max-w-3xl text-balance font-display text-[clamp(2.35rem,8.5vw,4.75rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-ink-1 lg:mt-6 lg:text-[clamp(2.6rem,6vw,4.75rem)] lg:leading-[1.04]">
-            One bot for the work that keeps a server running.
+            Keep the server moving. Let Discord handle the repeat work.
           </h1>
           <p className="mt-5 max-w-xl text-base leading-[1.7] text-ink-2 sm:text-lg">
-            B4NDX Utility handles moderation, support tickets, welcome and
-            goodbye messages, logging, giveaways, and polls — configured
-            entirely inside Discord, and it never asks for Administrator.
+            Moderation, tickets, welcome messages, logs, giveaways, and polls —
+            all set up where your team already works. No dashboard. No
+            Administrator permission.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

@@ -17,7 +17,7 @@ export function SupportCta() {
             Support
           </p>
           <h2 className="mt-4 text-balance font-display text-[clamp(1.5rem,2.6vw,2rem)] font-semibold leading-[1.15] tracking-[-0.015em] text-ink-1">
-            Set it up with help, not guesswork.
+            Need a hand setting it up?
           </h2>
           <p className="mt-4 text-[0.9375rem] leading-[1.7] text-ink-2">
             The support server is where setup questions get answered, bugs get

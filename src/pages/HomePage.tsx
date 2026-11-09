@@ -6,6 +6,7 @@ import { Permissions } from "../components/sections/Permissions";
 import { Faq } from "../components/sections/Faq";
 import { SupportCta } from "../components/sections/SupportCta";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { Reveal } from "../components/Reveal";
 
 export function HomePage() {
   useDocumentTitle(
@@ -24,18 +25,28 @@ export function HomePage() {
           className="mx-auto max-w-6xl px-5 pb-24 pt-20 sm:pt-24 lg:px-8 lg:pb-32"
         >
           <div className="space-y-24 lg:space-y-36">
-            <section aria-label="Features">
-              <Overview />
-              <Explorer />
-            </section>
+            <Reveal>
+              <section aria-label="Features">
+                <Overview />
+                <Explorer />
+              </section>
+            </Reveal>
 
-            <Install />
-            <Permissions />
-            <Faq />
+            <Reveal delay={60}>
+              <Install />
+            </Reveal>
+            <Reveal delay={90}>
+              <Permissions />
+            </Reveal>
+            <Reveal delay={120}>
+              <Faq />
+            </Reveal>
 
-            <section aria-label="Support">
-              <SupportCta />
-            </section>
+            <Reveal delay={150}>
+              <section aria-label="Support">
+                <SupportCta />
+              </section>
+            </Reveal>
           </div>
         </main>
       </div>

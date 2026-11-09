@@ -1,200 +1,102 @@
 @import "tailwindcss";
-
 @import "@fontsource-variable/archivo";
 @import "@fontsource-variable/inter";
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
 
 @theme {
-  /* ── Graphite & Rose ──────────────────────────────────────────────── */
-  --color-base-0: #0b0c0e;
-  --color-base-1: #101215;
-  --color-base-2: #15181d;
-  --color-base-3: #1a1e24;
-  --color-base-4: #22272e;
-
-  --color-ink-1: #eceff1;
-  --color-ink-2: #a8b0b7;
-  --color-ink-3: #6f777f;
-  --color-ink-4: #4a5157;
-
-  /* Accent shades lifted straight from the hero tree's blossom palette:
-     hot crown rose, pale highlight, deep interior, and a rose-black ink
-     for text sitting on the accent. */
-  --color-rose-1: #ff5c8a;
-  --color-rose-2: #ff7fb0;
-  --color-rose-3: #b2336b;
-  --color-rose-ink: #1f070f;
-
-  --color-line-1: rgba(236, 239, 241, 0.08);
-  --color-line-2: rgba(236, 239, 241, 0.14);
-
-  --color-ok: #86b392;
+  --color-base-0: #09090c;
+  --color-base-1: #101014;
+  --color-base-2: #17171d;
+  --color-base-3: #202027;
+  --color-base-4: #2b2b35;
+  --color-ink-1: #f4f0f2;
+  --color-ink-2: #bdb4bb;
+  --color-ink-3: #837984;
+  --color-ink-4: #5b525d;
+  --color-rose-1: #ff6b9b;
+  --color-rose-2: #ff9cbd;
+  --color-rose-3: #bc416f;
+  --color-rose-ink: #220812;
+  --color-line-1: rgba(255, 235, 244, 0.1);
+  --color-line-2: rgba(255, 235, 244, 0.18);
+  --color-ok: #8ed8b4;
   --color-blurple: #5865f2;
-
-  /* ── Type ─────────────────────────────────────────────────────────── */
   --font-display: "Archivo Variable", "Archivo", "Helvetica Neue", Arial, sans-serif;
   --font-sans: "Inter Variable", "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-
-  /* ── Motion ───────────────────────────────────────────────────────── */
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-/* ── Base ─────────────────────────────────────────────────────────────── */
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    @apply bg-base-0 font-sans text-ink-1 antialiased;
-    font-feature-settings: "ss01" on, "cv05" on;
-  }
-
-  ::selection {
-    background: rgba(255, 92, 154, 0.28);
-    color: var(--color-ink-1);
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--color-rose-1);
-    outline-offset: 2px;
-    border-radius: 1px;
-  }
-
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-base-4);
-    border: 2px solid var(--color-base-0);
-    border-radius: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--color-base-0);
-  }
-
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-base-0 font-sans text-ink-1 antialiased; background-image: radial-gradient(circle at 72% -10%, rgba(255, 100, 157, 0.08), transparent 34rem); font-feature-settings: "ss01" on, "cv05" on; }
+  ::selection { background: rgba(255, 107, 155, 0.3); color: var(--color-ink-1); }
+  :focus-visible { outline: 2px solid var(--color-rose-1); outline-offset: 3px; border-radius: 12px; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-base-4); border: 2px solid var(--color-base-0); border-radius: 999px; }
+  ::-webkit-scrollbar-track { background: var(--color-base-0); }
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   }
-
-  /* Once the hero headline has fully faded out of the pinned sequence,
-     remove it from the tab order and accessibility tree as well. */
-  [data-past="true"] .hero-headline {
-    visibility: hidden;
-  }
+  [data-past="true"] .hero-headline { visibility: hidden; }
 }
-
-/* ── Shared components ────────────────────────────────────────────────── */
 
 @layer components {
-  .btn,
-  .btn-primary,
-  .btn-secondary,
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-[3px] px-5 py-3 text-sm font-medium tracking-[0.01em] transition-colors duration-150;
-    min-height: 44px;
-  }
-
-  .btn-primary {
-    @apply bg-rose-1 text-rose-ink;
-  }
-  .btn-primary:hover {
-    @apply bg-rose-2;
-  }
-
-  .btn-secondary {
-    @apply border border-line-2 text-ink-1;
-  }
-  .btn-secondary:hover {
-    @apply border-ink-3 bg-base-2;
-  }
-
-  .btn-ghost {
-    @apply text-ink-2;
-  }
-  .btn-ghost:hover {
-    @apply bg-base-2 text-ink-1;
-  }
-
-  /* Mono eyebrow: "01 — Modules" */
-  .eyebrow {
-    @apply flex items-center gap-3 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-3;
-  }
-  .eyebrow-index {
-    @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-rose-1;
-  }
-
-  .chip {
-    @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line-1 bg-base-2 px-2.5 py-1 font-mono text-[0.78rem] text-ink-2;
-  }
-
-  .surface {
-    @apply rounded-[4px] border border-line-1 bg-base-2;
-  }
+  .btn, .btn-primary, .btn-secondary, .btn-ghost { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-[0.01em] transition-all duration-300; min-height: 46px; }
+  .btn-primary { @apply bg-rose-1 text-rose-ink; box-shadow: 0 14px 34px rgba(255, 107, 155, 0.18); }
+  .btn-primary:hover { @apply bg-rose-2; transform: translateY(-2px); box-shadow: 0 18px 42px rgba(255, 107, 155, 0.3); }
+  .btn-secondary { @apply border border-line-2 bg-white/[0.03] text-ink-1; backdrop-filter: blur(18px); }
+  .btn-secondary:hover { @apply border-rose-1/60 bg-white/[0.08]; transform: translateY(-2px); }
+  .btn-ghost { @apply text-ink-2; }
+  .btn-ghost:hover { @apply bg-base-2 text-ink-1; transform: translateY(-1px); }
+  .eyebrow { @apply flex items-center gap-3 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-ink-3; }
+  .eyebrow-index { @apply font-mono text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-rose-1; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line-1 bg-white/[0.04] px-3 py-1.5 font-mono text-[0.78rem] text-ink-2; backdrop-filter: blur(16px); }
+  .surface { @apply rounded-[28px] border border-line-1 bg-white/[0.035]; backdrop-filter: blur(24px); box-shadow: inset 0 1px rgba(255,255,255,0.04), 0 24px 80px rgba(0,0,0,0.16); }
+  .reveal { opacity: 0; transform: translateY(32px) scale(0.985); transition: opacity 800ms var(--ease-cinematic), transform 800ms var(--ease-cinematic); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ── Utilities ────────────────────────────────────────────────────────── */
+@utility bg-blueprint { background-image: linear-gradient(to right, rgba(255, 235, 244, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 235, 244, 0.04) 1px, transparent 1px); background-size: 44px 44px; }
+@utility mask-vignette { mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%); -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%); }
+@utility hairline-t { border-top: 1px solid var(--color-line-1); }
+@utility hairline-b { border-bottom: 1px solid var(--color-line-1); }
+@utility text-balance { text-wrap: balance; }
 
-@utility bg-blueprint {
-  background-image:
-    linear-gradient(to right, rgba(236, 239, 241, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(236, 239, 241, 0.04) 1px, transparent 1px);
-  background-size: 44px 44px;
+/* The reference uses soft, tactile geometry instead of square dashboard boxes. */
+.rounded-\[4px\] { border-radius: 24px !important; }
+.rounded-\[3px\] { border-radius: 999px !important; }
+
+.tree-scene { --tree-mx: 0px; --tree-my: 0px; position: absolute; inset: 0; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse 62% 58% at 78% 48%, rgba(255, 75, 141, 0.12), transparent 68%); transition: transform 900ms var(--ease-cinematic); }
+.tree-scene::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(16,16,20,0.98) 0%, rgba(16,16,20,0.78) 26%, transparent 58%), linear-gradient(0deg, rgba(9,9,12,0.88), transparent 36%); pointer-events: none; z-index: 4; }
+.tree-atmosphere, .tree-aura, .tree-ground-haze, .tree-lens-flare { position: absolute; pointer-events: none; }
+.tree-atmosphere { inset: 0; z-index: 0; background: radial-gradient(circle at 72% 40%, rgba(255, 175, 205, 0.14), transparent 18%), radial-gradient(circle at 80% 58%, rgba(255, 61, 133, 0.12), transparent 32%); animation: atmosphere-breathe 8s ease-in-out infinite; }
+.tree-aura { z-index: 1; border-radius: 50%; filter: blur(80px); opacity: .62; }
+.tree-aura-back { width: 48vw; height: 48vw; right: 4%; top: 5%; background: rgba(255, 45, 125, .16); animation: aura-pulse 7s ease-in-out infinite; }
+.tree-art { position: absolute; z-index: 3; width: min(96vw, 1500px); max-width: none; right: -4%; bottom: -10%; transform: translate3d(var(--tree-mx), var(--tree-my), 0) scale(1.05); transform-origin: 78% 82%; object-fit: contain; mix-blend-mode: screen; will-change: transform, filter; animation: tree-drift 8s ease-in-out infinite; transition: transform 1.2s var(--ease-cinematic), filter 1.2s ease; }
+.tree-art-glow { z-index: 2; opacity: .72; filter: blur(22px) saturate(1.25); transform: translate3d(calc(var(--tree-mx) * 1.35), calc(var(--tree-my) * 1.35), 0) scale(1.08); animation: glow-drift 6s ease-in-out infinite; }
+.tree-ground-haze { z-index: 5; left: 42%; right: -8%; bottom: -13%; height: 38%; background: radial-gradient(ellipse at center, rgba(255, 73, 144, .22), transparent 68%); filter: blur(30px); animation: ground-breathe 6s ease-in-out infinite; }
+.tree-lens-flare { z-index: 6; width: 22rem; height: 22rem; right: 25%; top: 25%; border-radius: 50%; background: radial-gradient(circle, rgba(255,235,245,.16), rgba(255,92,154,.05) 28%, transparent 68%); filter: blur(8px); mix-blend-mode: screen; animation: lens-pulse 5s ease-in-out infinite; }
+.tree-petal { position: absolute; z-index: 7; display: block; border-radius: 100% 0 100% 0; background: linear-gradient(135deg, #ffd7e6, #ff5f99); box-shadow: 0 0 12px rgba(255, 117, 171, .7); opacity: 0; animation: petal-fall linear infinite; }
+
+@keyframes tree-drift { 0%, 100% { transform: translate3d(var(--tree-mx), var(--tree-my), 0) scale(1.05) rotate(-0.45deg); filter: saturate(1) brightness(.98); } 35% { transform: translate3d(calc(var(--tree-mx) - 5px), calc(var(--tree-my) + 8px), 0) scale(1.065) rotate(.18deg); filter: saturate(1.08) brightness(1.02); } 68% { transform: translate3d(calc(var(--tree-mx) + 13px), calc(var(--tree-my) - 16px), 0) scale(1.09) rotate(.55deg); filter: saturate(1.16) brightness(1.06); } }
+@keyframes glow-drift { 0%, 100% { opacity: .48; transform: translate3d(calc(var(--tree-mx) * 1.35), calc(var(--tree-my) * 1.35), 0) scale(1.08); } 50% { opacity: .9; transform: translate3d(calc(var(--tree-mx) * 1.55), calc(var(--tree-my) * 1.55 - 10px), 0) scale(1.13); } }
+@keyframes atmosphere-breathe { 0%, 100% { opacity: .7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes aura-pulse { 0%, 100% { opacity: .42; transform: scale(.92); } 50% { opacity: .74; transform: scale(1.08); } }
+@keyframes ground-breathe { 0%, 100% { opacity: .42; transform: scaleX(.88); } 50% { opacity: .8; transform: scaleX(1.06); } }
+@keyframes lens-pulse { 0%, 100% { opacity: .35; transform: scale(.84); } 50% { opacity: .72; transform: scale(1.12); } }
+@keyframes petal-fall { 0% { opacity: 0; transform: translate3d(0, -18px, 0) rotate(0deg) scale(.8); } 12% { opacity: .85; } 78% { opacity: .5; } 100% { opacity: 0; transform: translate3d(var(--petal-drift), 160px, 0) rotate(300deg) scale(1.1); } }
+
+@media (max-width: 1023px) {
+  .tree-art { width: 145vw; right: -34%; bottom: -6%; transform: translate3d(var(--tree-mx), var(--tree-my), 0) scale(1.08); }
+  .tree-art-glow { transform: translate3d(var(--tree-mx), var(--tree-my), 0) scale(1.1); }
+  .tree-scene::after { background: linear-gradient(90deg, rgba(16,16,20,.98) 0%, rgba(16,16,20,.72) 45%, transparent 90%), linear-gradient(0deg, rgba(9,9,12,.92), transparent 50%); }
+  .tree-lens-flare { right: 8%; top: 28%; }
 }
-
-@utility mask-vignette {
-  mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, black 30%, transparent 78%);
-}
-
-@utility hairline-t {
-  border-top: 1px solid var(--color-line-1);
-}
-
-@utility hairline-b {
-  border-bottom: 1px solid var(--color-line-1);
-}
-
-@utility text-balance {
-  text-wrap: balance;
-}
-
-@keyframes caret {
-  0%,
-  55% {
-    opacity: 1;
-  }
-  56%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-panel {
-  animation: panel-in 160ms var(--ease-out-quart);
+@media (prefers-reduced-motion: reduce) {
+  .tree-art, .tree-art-glow, .tree-atmosphere, .tree-aura, .tree-ground-haze, .tree-lens-flare, .tree-petal { animation: none !important; }
+  .tree-art { transform: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
 }

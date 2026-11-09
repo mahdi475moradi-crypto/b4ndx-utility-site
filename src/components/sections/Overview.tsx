@@ -12,8 +12,8 @@ export function Overview() {
       <SectionHeader
         index="01"
         label="Modules"
-        title="Everything a busy server needs. Nothing it doesn't."
-        lead="Four groups cover the day-to-day: keeping order, supporting members, running the community side, and handling the small recurring work — all through slash commands inside Discord."
+        title="The jobs your server asks you to do every day."
+        lead="Moderation, member support, community updates, and the small jobs in between — handled with slash commands inside Discord."
       />
 
       <div className="mt-14 border-t border-line-1">
