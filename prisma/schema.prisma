@@ -1,0 +1,137 @@
+// H.K View — Prisma schema (sandbox build: SQLite)
+// Identical model structure to the supplied project schema; provider adapted to SQLite,
+// which does not support @db.Text column typing (SQLite TEXT is the default for strings).
+// All monetary values are stored as Int (cents). Dates are stored as String (YYYY-MM-DD).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model HotelSettings {
+  id                     String   @id @default("default")
+  hotelName              String   @default("H.K View")
+  tagline                String   @default("A serene retreat in Udhampur, Jammu & Kashmir")
+  description            String
+  address                String   @default("")
+  city                   String   @default("Udhampur")
+  country                String   @default("India")
+  phone                  String   @default("")
+  email                  String   @default("")
+  checkInTime            String   @default("14:00")
+  checkOutTime           String   @default("11:00")
+  currency               String   @default("INR")
+  currencySymbol         String   @default("₹")
+  taxRatePct             Float    @default(12.0)
+  extraPersonFeeCents    Int      @default(1500)
+  baseOccupancyThreshold Int      @default(2)
+  resortFeeCents         Int      @default(0)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model RoomType {
+  id               String            @id @default(cuid())
+  slug             String            @unique
+  name             String
+  tagline          String
+  shortDescription String
+  longDescription  String
+  sizeSqm          Int?
+  bedType          String
+  bedCount         Int               @default(1)
+  maxOccupancy     Int
+  baseAdults       Int               @default(2)
+  baseChildren     Int               @default(0)
+  basePriceCents   Int
+  coverImage       String
+  gallery          String // JSON array of image URLs
+  amenities        String // JSON array of amenity keys
+  view             String            @default("Garden")
+  badge            String?
+  sortOrder        Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  inventory        Inventory[]
+  ratePlans        RatePlan[]
+  reservationItems ReservationItem[]
+}
+
+model RatePlan {
+  id                  String            @id @default(cuid())
+  roomTypeId          String
+  roomType            RoomType          @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  name                String
+  description         String
+  refundable          Boolean           @default(true)
+  breakfastIncluded   Boolean           @default(false)
+  priceModifierPct    Float             @default(0.0)
+  cancellationSummary String
+  sortOrder           Int               @default(0)
+  reservationItems    ReservationItem[]
+}
+
+model Inventory {
+  id             String   @id @default(cuid())
+  roomTypeId     String
+  date           String // YYYY-MM-DD
+  availableCount Int
+  blocked        Boolean  @default(false)
+  roomType       RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([roomTypeId, date])
+  @@index([date])
+}
+
+model Reservation {
+  id              String            @id @default(cuid())
+  reference       String            @unique
+  status          String            @default("CONFIRMED") // PENDING, CONFIRMED, CANCELLED, CHECKED_IN, CHECKED_OUT, NO_SHOW
+  checkIn         String // YYYY-MM-DD
+  checkOut        String // YYYY-MM-DD
+  nights          Int
+  adults          Int
+  children        Int
+  rooms           Int
+
+  guestFirstName  String
+  guestLastName   String
+  guestEmail      String
+  guestPhone      String
+  specialRequests String?
+
+  subtotalCents   Int
+  taxesCents      Int
+  feesCents       Int
+  discountCents   Int     @default(0)
+  totalCents      Int
+  paidCents       Int     @default(0)
+  currency        String  @default("INR")
+
+  paymentStatus   String  @default("PENDING") // PENDING, PAID, REFUNDED, FAILED
+  paymentMethod   String  @default("CARD_TEST")
+  paymentRef      String?
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  items           ReservationItem[]
+}
+
+model ReservationItem {
+  id                  String       @id @default(cuid())
+  reservationId       String
+  reservation         Reservation  @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  roomTypeId          String
+  roomType            RoomType     @relation(fields: [roomTypeId], references: [id])
+  ratePlanId          String
+  ratePlan            RatePlan     @relation(fields: [ratePlanId], references: [id])
+  adults              Int
+  children            Int
+  pricePerNightCents  Int
+  nightsCount         Int
+  lineTotalCents      Int
+}
