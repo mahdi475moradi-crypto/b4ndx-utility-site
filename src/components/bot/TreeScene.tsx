@@ -158,7 +158,6 @@ export default function TreeScene() {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    const root = mount;
 
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -171,21 +170,21 @@ export default function TreeScene() {
       powerPreference: "high-performance",
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
-    renderer.setSize(root.clientWidth, root.clientHeight);
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setClearColor(BG, 1);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
-    root.appendChild(renderer.domElement);
+    mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(BG, 0.055);
 
     const camera = new THREE.PerspectiveCamera(
       40,
-      root.clientWidth / root.clientHeight,
+      mount.clientWidth / mount.clientHeight,
       0.1,
       60
     );
@@ -288,7 +287,7 @@ export default function TreeScene() {
     treeGroup.add(trunk);
 
     /* ---------------- foliage ---------------- */
-    const isNarrow = () => root.clientWidth / root.clientHeight < 0.85;
+    const isNarrow = () => mount.clientWidth / mount.clientHeight < 0.85;
     const lowPower = (navigator.hardwareConcurrency ?? 8) <= 4 || isNarrow();
 
     const PALETTE: [number, number, number][] = [
@@ -463,7 +462,7 @@ export default function TreeScene() {
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     const bloom = new UnrealBloomPass(
-      new THREE.Vector2(root.clientWidth, root.clientHeight),
+      new THREE.Vector2(mount.clientWidth, mount.clientHeight),
       reduced ? 0.32 : 0,
       0.5,
       0.3
@@ -478,7 +477,7 @@ export default function TreeScene() {
     let baseScale = 0.98;
 
     function frame() {
-      const aspect = root.clientWidth / root.clientHeight;
+      const aspect = mount.clientWidth / mount.clientHeight;
       if (aspect < 0.85) {
         // mobile: tree centered behind the copy, smaller
         treeGroup.position.set(0, -0.22, 0);
@@ -503,7 +502,7 @@ export default function TreeScene() {
       baseCamY = camera.position.y;
       camera.lookAt(lookX, 1.45, 0);
       uPx.value =
-        root.clientHeight /
+        mount.clientHeight /
         (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
     }
     frame();
@@ -520,14 +519,14 @@ export default function TreeScene() {
     };
     const onScroll = () => {
       scrollP = Math.min(1, window.scrollY / (window.innerHeight * 1.15));
-      root.style.opacity = String(1 - scrollP * 0.8);
+      mount.style.opacity = String(1 - scrollP * 0.8);
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const onResize = () => {
-      const w = root.clientWidth;
-      const h = root.clientHeight;
+      const w = mount.clientWidth;
+      const h = mount.clientHeight;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -596,8 +595,8 @@ export default function TreeScene() {
     const fadeTimer = window.setInterval(() => {
       fades++;
       if (fades >= 6) {
-        root.style.transition = "none";
-        root.style.opacity = String(1 - scrollP * 0.8);
+        mount.style.transition = "none";
+        mount.style.opacity = String(1 - scrollP * 0.8);
         window.clearInterval(fadeTimer);
       }
     }, 100);
@@ -622,7 +621,7 @@ export default function TreeScene() {
       composer.dispose();
       renderer.dispose();
       if (renderer.domElement.parentNode === mount) {
-        root.removeChild(renderer.domElement);
+        mount.removeChild(renderer.domElement);
       }
     };
   }, []);
